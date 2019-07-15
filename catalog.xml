@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<catalog xmlns="urn:oasis:names:tc:entity:xmlns:xml:catalog" prefer="system">
+    <system systemId="http://localhost:8080/interface-pgifx-salta/services/WSInterfacePgIfx?wsdl" uri="xml-resources/web-service-references/WSInterfacePgIfx/wsdl/localhost_8080/interface-pgifx-salta/services/WSInterfacePgIfx.wsdl"/>
+    <system systemId="http://192.168.40.77:8080/iurix-web-salta/services/DenunciasWebService?wsdl" uri="xml-resources/web-service-references/DenunciasWebService/wsdl/192.168.40.77_8080/iurix-web-salta/services/DenunciasWebService.wsdl"/>
+    <system systemId="http://localhost:8081/tramix-flex/services/SumarioPolicialWebService?wsdl" uri="xml-resources/web-service-references/SumarioPolicialWebService/wsdl/localhost_8081/tramix-flex/services/SumarioPolicialWebService.wsdl"/>
+    <system systemId="file:/C:/Users/mbertinotti/Favorites/Downloads/WSdatosUIF.wsdl" uri="xml-resources/web-service-references/WSdatosUIF_2/wsdl/WSdatosUIF.wsdl"/>
+</catalog>

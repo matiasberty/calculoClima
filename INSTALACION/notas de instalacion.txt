@@ -1,0 +1,17 @@
+1-tener instalado java
+2-Configurar/editar el exec.bat:
+	a-especificar la unidad en la que se aloja el proceso, por defecto esta en C:
+	b-especificar el directorio en que se aloja el proceso, por defecto esta en \temp\exe
+
+3-Configurar/editar las propiedades para el proceso:
+	a-TRANF_URL: URL del WS(Transferencia)
+	b-EXE: ejecutable a llamar luego de llamar al ws (mail)
+	c-DEN_URL:URL Denuncias
+
+	*comentar aquello que no se desea ejecutar	
+
+	d-Log
+PATHLOG: archivo de log de errores
+	
+4-configurar una tarea programada de windows para que se ejecute cada cierto periodo de tiempo(http://windows.microsoft.com/es-ar/windows/schedule-task#1TC=windows-7)
+ 	
