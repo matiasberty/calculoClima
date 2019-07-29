@@ -28,7 +28,7 @@ import procesoclima.util.estrategias.EstrategiaPrediccionManager;
  * @author mbertinotti
  */
 public class Climas {
-    public static void procesarClima(){
+    public static String procesarClima(){
         List<Planeta> planetas = initPlanetas();
         Punto puntoSol = new Punto(0, 0);
         
@@ -113,9 +113,21 @@ public class Climas {
             System.out.println("Cantidad de Períodos de Lluvia: " + periodo);
             System.out.println("Picos Max. de Lluvia: " + repiteDiaMaximo);
             System.out.println("Donde el pico máximo será: " + maxDiaLluvia);
+            
+            String res = "";
+            res += "Cantidad de días de Normal: " + totales.get(EstadoClima.Normal.getDescripcion()) + "-;-";
+            res += "Cantidad de días de Sequía: " + totales.get(EstadoClima.Sequia.getDescripcion()) + "-;-";
+            res += "Cantidad de días con Condiciones Optimas: " + totales.get(EstadoClima.CondicionesOptimas.getDescripcion()) + "-;-";
+            res += "Cantidad de días de Lluvia: " + totales.get(EstadoClima.Lluvia.getDescripcion()) + "-;-";
+            res += "Cantidad de Períodos de Lluvia: " + periodo + "-;-";
+            res += "Picos Max. de Lluvia: " + repiteDiaMaximo + "-;-";
+            res += "Donde el pico máximo será: " + maxDiaLluvia;
+            
+            return res;
         }catch(Exception e){
             System.out.println("ERROR EN: procesoclima.clima.Climas.procesarClima()");
             System.out.println("ERROR: " + e.getMessage());
+            return "ERROR";
         }
     }
     
