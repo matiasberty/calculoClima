@@ -5,6 +5,8 @@
  */
 package procesoclima.clima;
 
+import com.google.gson.JsonArray;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import java.time.LocalDate;
 import java.time.Period;
@@ -29,10 +31,13 @@ import procesoclima.util.estrategias.EstrategiaPrediccionManager;
  */
 public class Climas {
     public static String procesarClima(){
+        return calcularClimaDesde(new Date());
+    }
+    
+    public static String calcularClimaDesde(Date fechaInicial){
         List<Planeta> planetas = initPlanetas();
         Punto puntoSol = new Punto(0, 0);
         
-        Date fechaInicial = new Date();
         Date fechaFin = null;
         Long cantDias = null;
         Calendar c = Calendar.getInstance();
@@ -56,38 +61,24 @@ public class Climas {
         totales.put(EstadoClima.Sequia.getDescripcion(), 0);
         totales.put(EstadoClima.Normal.getDescripcion(), 0);
         
-        
         try{
-            /*Planeta ferengi = new Planeta(500, 1);
-            Planeta betasoide = new Planeta(2000, 3);
-            Planeta vulcano = new Planeta(1000, -5);*/
-            
+            JsonObject jd = new JsonObject();
             for(int dia = 1; dia <= cantDias; dia++){
-            //for(int dia = 1; dia <= 360; dia++){
                 List<Punto> puntosDePlanetas = getPuntosDePlanetas(planetas, dia);
                 
                 PrediccionClima prediccion = predecirClima(puntosDePlanetas, puntoSol, dia);
                 predicciones.add(prediccion);
                 String descripcion = prediccion.getEstado().getDescripcion();
                 
-                //System.out.println("DIA " + dia + " - Prediccion: " + descripcion);
-                
                 totales.put(descripcion, totales.get(descripcion) + 1);
-                
-                /*System.out.println("DIA " + dia);
-                Punto a = posicionPlaneta(ferengi, dia);
-                System.out.println("ferengi: X=" + a.getX() + " - Y=" + a.getY());
-                Punto b = posicionPlaneta(betasoide, dia);
-                System.out.println("betasoide: X=" + b.getX() + " - Y=" + b.getY());
-                Punto d = posicionPlaneta(vulcano, dia);
-                System.out.println("vulcano: X=" + d.getX() + " - Y=" + d.getY());*/
+                jd.addProperty(String.valueOf(dia), descripcion);
                 
                 if(descripcion == EstadoClima.Lluvia.getDescripcion()){
                     double perimetro = UtilCalculo.calcularPerimetro(puntosDePlanetas);
                     if(perimetro > maxPerimetro) {
                         maxPerimetro = perimetro;
                         maxDiaLluvia = dia;
-                        repiteDiaMaximo = "";
+                        repiteDiaMaximo = "" + dia;
                     }else if(perimetro == maxPerimetro) {
                         if(repiteDiaMaximo.equals("")){
                             repiteDiaMaximo = "" + dia;
@@ -114,16 +105,21 @@ public class Climas {
             System.out.println("Picos Max. de Lluvia: " + repiteDiaMaximo);
             System.out.println("Donde el pico máximo será: " + maxDiaLluvia);
             
-            String res = "";
-            res += "Cantidad de días de Normal: " + totales.get(EstadoClima.Normal.getDescripcion()) + "-;-";
-            res += "Cantidad de días de Sequía: " + totales.get(EstadoClima.Sequia.getDescripcion()) + "-;-";
-            res += "Cantidad de días con Condiciones Optimas: " + totales.get(EstadoClima.CondicionesOptimas.getDescripcion()) + "-;-";
-            res += "Cantidad de días de Lluvia: " + totales.get(EstadoClima.Lluvia.getDescripcion()) + "-;-";
-            res += "Cantidad de Períodos de Lluvia: " + periodo + "-;-";
-            res += "Picos Max. de Lluvia: " + repiteDiaMaximo + "-;-";
-            res += "Donde el pico máximo será: " + maxDiaLluvia;
+            JsonObject jo = new JsonObject();
             
-            return res;
+            jo.addProperty("diasNormal", totales.get(EstadoClima.Normal.getDescripcion()));
+            jo.addProperty("diasSequia", totales.get(EstadoClima.Sequia.getDescripcion()));
+            jo.addProperty("diasCondicionesOptimas", totales.get(EstadoClima.CondicionesOptimas.getDescripcion()));
+            jo.addProperty("diasLluvia", totales.get(EstadoClima.Lluvia.getDescripcion()));
+            jo.addProperty("cantPeriodoLluvia", periodo);
+            jo.addProperty("picoMaxLluvia", repiteDiaMaximo);
+            jo.addProperty("diaMaxLluvia", maxDiaLluvia);
+            
+            JsonObject res = new JsonObject();
+            res.addProperty("dias", jd.toString());
+            res.addProperty("resultados", jo.toString());
+            
+            return res.toString();
         }catch(Exception e){
             System.out.println("ERROR EN: procesoclima.clima.Climas.procesarClima()");
             System.out.println("ERROR: " + e.getMessage());
